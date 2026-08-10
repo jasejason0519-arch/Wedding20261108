@@ -3,33 +3,57 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>林顏琛 &amp; 嚴思函 ・ 我們結婚了</title>
-<meta name="description" content="顏琛與思函誠摯邀請您，一同見證我們的婚禮。2026 年 11 月 8 日（星期日）中午 12 點，台北萬豪酒店 5 樓宜華廳。" />
-<meta name="theme-color" content="#faf8f4" />
+<!-- =============================================================
+     ★★★ 要改分享預覽的文字，就改下面這四行 ★★★
 
-<!-- 分享到 LINE / FB 時的預覽卡片。
-     og:image 和 og:url 一定要用「完整絕對網址」，
-     LINE 與 Facebook 的爬蟲不會去解析相對路徑，
-     寫成 assets/img/og.jpg 的話預覽圖抓不到。
-     注意 repo 名稱是大寫 Wedding，網址大小寫必須一致。 -->
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Jason &amp; Yvonne's Wedding" />
-<meta property="og:locale" content="zh_TW" />
+     改完記得：
+       1. 上傳這個檔案到 GitHub
+       2. 到 Facebook 分享偵錯工具按「Scrape Again」清快取
+          https://developers.facebook.com/tools/debug/
+          （不清的話會一直顯示舊的標題）
+
+     注意：「&」在 HTML 裡要寫成 &amp;，直接打 & 可能會出錯。
+     ============================================================= -->
+
+<!-- ① 瀏覽器分頁、書籤、Google 搜尋結果的標題 -->
+<title>林顏琛 &amp; 嚴思函 ・ 我們結婚了</title>
+
+<!-- ② Google 搜尋結果顯示的說明文字（建議 60～80 字） -->
+<meta name="description" content="顏琛與思函誠摯邀請您，一同見證我們的婚禮。2026 年 11 月 8 日（星期日）中午 12 點，台北萬豪酒店 5 樓宜華廳。" />
+
+<!-- ③ LINE / Facebook / X 分享卡片的【大標題】
+     建議 30 字內，太長會被切掉                                  -->
 <meta property="og:title" content="Jason &amp; Yvonne we are getting married" />
+
+<!-- ④ LINE / Facebook / X 分享卡片的【說明文字】
+     建議 50 字內，手機上大約只顯示前兩行                        -->
 <meta property="og:description" content="2026 年 11 月 8 日（星期日），誠摯邀請您與我們共享這一天。" />
-<meta property="og:url" content="https://jasejason0519-arch.github.io/Wedding/" />
-<meta property="og:image" content="https://jasejason0519-arch.github.io/Wedding/assets/img/og.jpg" />
+
+
+<!-- =============================================================
+     以下都是技術設定，改文字時不用動
+     ============================================================= -->
+<meta name="theme-color" content="#faf8f4" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="og:site_name" content="Jason &amp; Yvonne's Wedding" />
+
+<!-- ⚠ 以下三處是「完整絕對網址」，必須跟 repo 名稱完全一致。
+     LINE 與 Facebook 的爬蟲不解析相對路徑，也不會自己找新網址，
+     所以【每次改 repo 名稱，這三行都要一起改】，
+     否則預覽圖會因為抓到 404 而完全不顯示。
+     目前 repo 名稱：Wedding20261108（區分大小寫）              -->
+<meta property="og:url" content="https://jasejason0519-arch.github.io/Wedding20261108/" />
+<meta property="og:image" content="https://jasejason0519-arch.github.io/Wedding20261108/assets/img/og.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="林顏琛與嚴思函" />
+<link rel="canonical" href="https://jasejason0519-arch.github.io/Wedding20261108/" />
 
-<!-- Twitter / X 也吃這組，補上才會顯示大圖 -->
+<!-- X / Twitter 只需要這行就會用大圖版面，
+     標題與說明會自動沿用上面的 og:title / og:description，
+     不必再寫一組 twitter:title、twitter:description。          -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Jason &amp; Yvonne we are getting married" />
-<meta name="twitter:description" content="2026 年 11 月 8 日（星期日），誠摯邀請您與我們共享這一天。" />
-<meta name="twitter:image" content="https://jasejason0519-arch.github.io/Wedding/assets/img/og.jpg" />
-
-<link rel="canonical" href="https://jasejason0519-arch.github.io/Wedding/" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
