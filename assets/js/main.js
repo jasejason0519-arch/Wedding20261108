@@ -78,9 +78,9 @@
       if (val !== undefined && val !== null && val !== '') el.textContent = val;
     });
 
-    // 頁面標題
-    var g = get('couple.groom.name'), b = get('couple.bride.name');
-    if (g && b) document.title = g + ' & ' + b + ' ・ 我們結婚了';
+    // 這裡原本會用 config 的姓名覆寫 document.title。
+    // 那樣一來 index.html 的 <title> 改了也會被蓋掉，
+    // 「明明改了卻沒變」很難查。現在標題只由 <title> 決定。
   }
 
   /* ---------- Logo ----------
