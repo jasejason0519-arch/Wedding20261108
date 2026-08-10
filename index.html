@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>林顏琛 &amp; 嚴思函 ・ 我們結婚了</title>
+<meta name="description" content="顏琛與思函誠摯邀請您，一同見證我們的婚禮。2026 年 11 月 8 日（星期日）中午 12 點，台北萬豪酒店 5 樓宜華廳。" />
+<meta name="theme-color" content="#faf8f4" />
+
+<!-- 分享到 LINE / FB 時的預覽卡片 -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="林顏琛 &amp; 嚴思函 ・ 我們結婚了" />
+<meta property="og:description" content="2026 年 11 月 8 日（星期日）中午 12 點開席，台北萬豪酒店 5 樓宜華廳。誠摯邀請您與我們共享這一天。" />
+<meta property="og:image" content="assets/img/og.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Jost:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body>
+<a class="skip-link" href="#main">跳到主要內容</a>
+
+<!-- ============ 導覽列 ============ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__mark" href="#top" aria-label="回到頂端">
+      <!-- logo 由 assets/js/config.js 的 brand.logo 帶入；載入失敗時退回文字 -->
+      <img id="navLogo" src="assets/img/logo-mark.png" alt="林顏琛 &amp; 嚴思函" />
+      <span class="nav__mark-text" data-bind="couple.monogram" hidden>J &amp; Y</span>
+    </a>
+
+    <nav class="nav__links" id="navLinks" aria-label="主導覽">
+      <a href="#details">婚禮資訊</a>
+      <a href="#faq">貼心提醒</a>
+      <a class="nav__cta" href="#rsvp">出席回覆</a>
+    </nav>
+
+    <button class="nav__toggle" id="navToggle" type="button"
+            aria-expanded="false" aria-controls="navLinks" aria-label="開啟選單">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ 封面 ============
+       高度是 min-height: 100svh，內容變多時會自然往下長，
+       不使用 overflow: hidden，確保任何尺寸都不會裁到資訊。 -->
+  <section class="cover" id="top">
+    <div class="cover__sheet">
+      <div class="cover__grid">
+
+        <!-- 標題區：手機時排在照片上方，只佔一小塊高度 -->
+        <div class="cover__head">
+          <img class="cover__logo" id="coverLogo"
+               src="assets/img/logo-large.png" alt="林顏琛 &amp; 嚴思函" />
+
+          <h1 class="hero__names">
+            <span data-bind="couple.groom.name">林顏琛</span>
+            <span class="hero__amp">&amp;</span>
+            <span data-bind="couple.bride.name">嚴思函</span>
+          </h1>
+
+          <p class="hero__sub">
+            <span data-bind="couple.groom.en">Jason</span> &amp;
+            <span data-bind="couple.bride.en">Yvonne</span> · We're getting married
+          </p>
+        </div>
+
+        <!-- 照片完整顯示不裁切；手機時緊接在標題下方，確保第一眼就看到 -->
+        <figure class="cover__photo" id="coverPhoto"></figure>
+
+        <!-- 日期場地與行動按鈕：手機時排在照片下方 -->
+        <div class="cover__info">
+          <div class="hero__meta">
+            <div class="hero__meta-item">
+              <span class="label">Date</span>
+              <span class="value" data-bind="fmt.dateDot">2026.11.08</span>
+              <span class="note" data-bind="fmt.weekday">星期日</span>
+            </div>
+            <span class="hero__divider" aria-hidden="true"></span>
+            <div class="hero__meta-item">
+              <span class="label">Time</span>
+              <span class="value" data-bind="fmt.time12">12:00 PM</span>
+              <span class="note">準時開席</span>
+            </div>
+            <span class="hero__divider" aria-hidden="true"></span>
+            <div class="hero__meta-item">
+              <span class="label">Place</span>
+              <span class="value" data-bind="venue.name">台北萬豪酒店</span>
+              <span class="note" data-bind="venue.hall">宜華廳 5F</span>
+            </div>
+          </div>
+
+          <!-- 倒數計時，由 JS 填入 -->
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div class="countdown__unit"><b data-cd="days">–</b><span>Days</span></div>
+            <div class="countdown__unit"><b data-cd="hours">–</b><span>Hours</span></div>
+            <div class="countdown__unit"><b data-cd="minutes">–</b><span>Minutes</span></div>
+            <div class="countdown__unit"><b data-cd="seconds">–</b><span>Seconds</span></div>
+          </div>
+
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#rsvp">出席回覆 RSVP</a>
+            <a class="btn btn--ghost" href="#details">婚禮資訊</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <a class="cover__hint" href="#invitation">
+      <span>往下看更多</span>
+      <i aria-hidden="true"></i>
+    </a>
+  </section>
+
+  <!-- ============ 邀請信 ============ -->
+  <section class="section section--letter reveal" id="invitation">
+    <div class="wrap wrap--narrow center">
+      <p class="kicker">The Invitation</p>
+      <h2 class="h2 h2--bold">親愛的家人與朋友</h2>
+      <div class="letter">
+        <p>生活裡最幸福的事，<br />
+           就是有人陪你一起吃飯、旅行、笑著過日子，<br />
+           把平凡的每一天過得閃閃發光。</p>
+        <p>謝謝一路陪伴著我們的你。</p>
+        <p>期待在這個特別的日子，和你相見。🤍</p>
+      </div>
+      <p class="sign">
+        <span data-bind="couple.groom.name">林顏琛</span> &amp;
+        <span data-bind="couple.bride.name">嚴思函</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 婚禮資訊 ============ -->
+  <section class="section section--alt" id="details">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <p class="kicker">The Details</p>
+        <h2 class="h2">婚禮資訊</h2>
+        <p class="section__lead">
+          <span data-bind="fmt.dateTw">2026 年 11 月 8 日</span>（<span data-bind="fmt.weekday">星期日</span>）・
+          <span data-bind="venue.name">台北萬豪酒店</span>
+          <span data-bind="venue.hall">宜華廳 5F</span>
+        </p>
+      </header>
+
+      <!-- 一直線下來的時間軸 -->
+      <ol class="vtimeline">
+        <li class="vtimeline__row reveal">
+          <span class="vtimeline__time">上午 11:00</span>
+          <span class="vtimeline__label">開始迎賓</span>
+        </li>
+        <li class="vtimeline__row reveal">
+          <span class="vtimeline__time">上午 11:30</span>
+          <span class="vtimeline__label">賓客入席</span>
+        </li>
+        <li class="vtimeline__row reveal">
+          <span class="vtimeline__time" data-bind="fmt.timeTw">中午 12:00</span>
+          <span class="vtimeline__label">準時開席</span>
+        </li>
+        <li class="vtimeline__row reveal">
+          <span class="vtimeline__time">預計下午 2:30</span>
+          <span class="vtimeline__label">結束</span>
+        </li>
+      </ol>
+
+      <!-- 場地 -->
+      <div class="venue reveal">
+        <p class="venue__label">Venue</p>
+        <p class="venue__name">
+          <span data-bind="venue.name">台北萬豪酒店</span>
+          <span data-bind="venue.hall">宜華廳 5F</span>
+        </p>
+        <p class="venue__address" data-bind="venue.address">台北市中山區樂群二路 199 號</p>
+      </div>
+
+      <div class="details__actions reveal">
+        <a class="btn btn--solid" id="mapBtn" href="#" target="_blank" rel="noopener">開啟地圖導航</a>
+        <a class="btn btn--ghost" id="transitBtn" href="#" target="_blank" rel="noopener">飯店交通資訊</a>
+        <button class="btn btn--ghost" id="calendarBtn" type="button">加入行事曆</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 出席回覆 ============ -->
+  <section class="section" id="rsvp">
+    <div class="wrap wrap--narrow">
+      <header class="section__head reveal">
+        <p class="kicker">R.S.V.P.</p>
+        <h2 class="h2">出席回覆</h2>
+        <!-- 日期用 u-nowrap 包住，避免在「2026 年 9 月」的空格處被拆行 -->
+        <p class="section__lead section__lead--wide">
+          為了統計出席人數與座位安排，懇請您在
+          <b class="u-nowrap" data-bind="fmt.deadline">2026 年 8 月 28 日(星期五)</b>前填寫完畢，謝謝您的配合！
+        </p>
+      </header>
+
+      <!-- 按鈕連到 Google 表單；網址由 config.js 的 googleForm.formUrl 帶入 -->
+      <div class="rsvp reveal" id="rsvpAction">
+        <a class="btn btn--solid btn--lg" id="rsvpBtn"
+           href="https://forms.gle/ewYUD29JHtf89YJA9"
+           target="_blank" rel="noopener">填寫出席回覆</a>
+        <p class="rsvp__note">會開啟 Google 表單，填完直接關掉即可。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 貼心提醒 ============ -->
+  <section class="section section--alt" id="faq">
+    <div class="wrap wrap--narrow">
+      <header class="section__head reveal">
+        <p class="kicker">Good to Know</p>
+        <h2 class="h2">貼心提醒</h2>
+      </header>
+
+      <div class="faq">
+        <details class="faq__item reveal">
+          <summary>穿什麼比較合適？</summary>
+          <div class="faq__body">
+            <p>穿上讓你最有自信、最舒服的衣服就好！🤍</p>
+            <p>如果剛好有 <b>綠色、奶茶色、棕咖色</b> 的服裝，
+               歡迎一起加入我們的婚禮色盤 🎨</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>怎麼去？可以停車嗎？</summary>
+          <div class="faq__body">
+            <p><b>捷運</b>　文湖線「劍南路站」下車，步行約 9 分鐘（約 1 公里）。</p>
+            <p><b>松山機場</b>　距離約 4.4 公里，計程車 10–15 分鐘；
+               也可搭捷運文湖線松山機場站到劍南路站，約 7 分鐘、2 站。</p>
+            <p><b>桃園機場</b>　距離約 47 公里，計程車約 40–50 分鐘。</p>
+            <p><b>開車</b>　地址為台北市中山區樂群二路 199 號（與敬業四路交叉口），
+               飯店設有停車場。中午時段大直一帶車位較緊，建議提早出發或搭乘捷運。</p>
+            <p>更詳細的路線、接送與費用，可以參考
+               <a data-transit-link href="https://www.taipeimarriott.com.tw/websev?cat=page&amp;id=44"
+                  target="_blank" rel="noopener">飯店官方交通資訊</a>。</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>有素食或飲食需求嗎？</summary>
+          <div class="faq__body">
+            <p>有的，全素、蛋奶素、過敏或忌口都可以，請在表單的備註欄告訴我們，會請飯店另外準備。</p>
+          </div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>拍照相關</summary>
+          <div class="faq__body">
+            <p>請盡情拍照、錄影、發限動，把歡樂分享出去 ✨</p>
+            <p>如果有標記我們，我們一定會很開心！</p>
+            <ul class="faq__tags">
+              <li>🤵 新郎：<b>@sethgg</b></li>
+              <li>👰 新娘：<b>@yvonne93171</b></li>
+            </ul>
+            <p>另外，我們也準備了 <b>照片共享 QR Code</b> 📸<br />
+               歡迎把當天拍到的照片上傳，讓我們一起收藏每個精彩瞬間！</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 結語 ============ -->
+  <section class="closing reveal">
+    <div class="wrap wrap--narrow center">
+      <p class="kicker">See you there</p>
+      <p class="closing__text">
+        <span class="u-nowrap" data-bind="fmt.dateTw">2026 年 11 月 8 日</span>，婚禮見！
+      </p>
+      <!-- 結語區是深色底，用淺色版 logo；載入失敗時退回文字縮寫 -->
+      <p class="closing__mark">
+        <img id="closingLogo" class="closing__logo"
+             src="assets/img/logo-light.png" alt="林顏琛 &amp; 嚴思函" />
+        <span class="closing__mark-text" data-bind="couple.monogram" hidden>J &amp; Y</span>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ 頁尾 ============ -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__col">
+      <p class="footer__label">日期地點</p>
+      <p><span data-bind="fmt.dateDot">2026.11.08</span>（<span data-bind="fmt.weekday">星期日</span>）・
+         <span data-bind="fmt.time12">12:00 PM</span> 開席</p>
+      <p><span data-bind="venue.name">台北萬豪酒店</span>
+         <span data-bind="venue.hall">宜華廳 5F</span></p>
+      <p data-bind="venue.address">台北市中山區樂群二路 199 號</p>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">快速連結</p>
+      <p><a href="#rsvp">出席回覆</a></p>
+      <p><a href="#details">婚禮資訊</a></p>
+      <p><a data-transit-link href="https://www.taipeimarriott.com.tw/websev?cat=page&amp;id=44"
+            target="_blank" rel="noopener">交通資訊</a></p>
+      <p><a href="#faq">貼心提醒</a></p>
+    </div>
+  </div>
+  <p class="footer__bottom">
+    婚禮當天在新郎新娘面前 shot 完一杯酒，有<b>神祕小禮物</b>
+  </p>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

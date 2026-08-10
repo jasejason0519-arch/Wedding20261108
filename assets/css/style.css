@@ -1,0 +1,922 @@
+/* =============================================================
+   Jason & Yvonne — Wedding Invitation
+   風格：美式簡潔 / editorial minimal
+   色票、字級都收在 :root，想換色只要改這一區
+   ============================================================= */
+
+:root {
+  --paper:      #faf8f4;   /* 主背景・米白 */
+  --paper-alt:  #f2eee7;   /* 交錯區塊背景 */
+  --ink:        #23211d;   /* 主文字・墨黑 */
+  --ink-soft:   #55504a;   /* 次要文字 */
+  --muted:      #8d867c;   /* 標籤、註解 */
+  --line:       #ddd6ca;   /* 分隔線 */
+  --accent:     #a38b6f;   /* 點綴・淺古銅 */
+
+  --serif: 'Cormorant Garamond', 'Noto Serif TC', 'Songti TC', serif;
+  --sans:  'Jost', 'Noto Serif TC', -apple-system, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --section-y: clamp(4.5rem, 11vw, 9rem);
+  --nav-h: 68px;
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.85;
+  letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 400; }
+p { margin: 0; }
+dl, dd, ol, ul { margin: 0; padding: 0; }
+li { list-style: none; }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--ink); color: var(--paper);
+  padding: .75rem 1.25rem; z-index: 999;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Layout helpers ---------- */
+.wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.wrap--narrow { max-width: 760px; }
+.center { text-align: center; }
+
+.section { padding-block: var(--section-y); }
+.section--alt { background: var(--paper-alt); }
+
+.section__head { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); text-align: center; }
+.section__lead {
+  margin-top: 1.1rem;
+  color: var(--ink-soft);
+  font-size: .95rem;
+  max-width: 46ch;
+  margin-inline: auto;
+}
+.section__lead b { font-weight: 500; color: var(--ink); }
+/* 句子裡含長日期時放寬，讓日期跟前半句留在同一行 */
+.section__lead--wide { max-width: 42em; }
+
+/* 不可斷行：用在含空格的日期、時間這類必須整塊呈現的字串 */
+.u-nowrap { white-space: nowrap; }
+
+/* ---------- Typography ---------- */
+.kicker {
+  font-size: .7rem;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
+  line-height: 1.25;
+  letter-spacing: .06em;
+}
+/* 邀請信的主旨要加粗。字型已在 index.html 載入 600 字重，
+   若只寫 bold 會讓瀏覽器用合成假粗體，中文筆畫會糊掉。 */
+.h2--bold { font-weight: 600; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 48px;
+  padding: 0 2rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: none;
+  font-family: var(--sans);
+  font-size: .78rem;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
+}
+.btn--solid { background: var(--ink); color: var(--paper); }
+.btn--solid:hover { background: transparent; color: var(--ink); }
+.btn--ghost:hover { background: var(--ink); color: var(--paper); }
+
+/* 加大版：出席回覆是全站最重要的動作，按鈕要撐得起來 */
+.btn--lg {
+  min-height: 58px;
+  padding: 0 clamp(2rem, 6vw, 3.25rem);
+  font-size: .84rem;
+  letter-spacing: .2em;
+}
+
+/* =============================================================
+   Nav
+   ============================================================= */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: transparent;
+  transition: background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.is-stuck {
+  background: rgba(250, 248, 244, .92);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+
+.nav__inner {
+  height: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav__mark {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  /* 加大點擊範圍，手機比較好按 */
+  margin-left: -6px;
+  padding: 6px;
+}
+.nav__mark img {
+  height: 38px;
+  width: auto;
+  transition: opacity .3s var(--ease);
+}
+.nav__mark:hover img { opacity: .65; }
+
+/* logo 載入失敗時才顯示的文字備援 */
+.nav__mark-text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  letter-spacing: .22em;
+}
+
+@media (max-width: 899px) {
+  .nav__mark img { height: 32px; }
+}
+
+.nav__links { display: flex; align-items: center; gap: clamp(1rem, 2.4vw, 2rem); }
+.nav__links a {
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding-block: .35rem;
+  border-bottom: 1px solid transparent;
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.nav__links a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.nav__links a.is-active { color: var(--ink); border-bottom-color: var(--accent); }
+
+.nav__cta {
+  border: 1px solid var(--ink) !important;
+  padding: .55rem 1.15rem !important;
+  color: var(--ink) !important;
+}
+.nav__cta:hover { background: var(--ink); color: var(--paper) !important; }
+
+.nav__toggle {
+  display: none;
+  width: 44px; height: 44px;
+  margin-right: -10px;
+  border: 0; background: none; cursor: pointer;
+  flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+}
+.nav__toggle span {
+  display: block; width: 22px; height: 1px; background: var(--ink);
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+}
+.nav__toggle[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.nav__toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+/* =============================================================
+   封面
+   規則：不鎖死高度、不使用 overflow: hidden。
+   min-height 是 100svh，內容需要更多空間時整段自然往下長，
+   所以任何螢幕尺寸都不會把資訊裁掉。
+   照片用 max-height + width:auto 控制，天生不裁切。
+   ============================================================= */
+.cover {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: calc(var(--nav-h) + 1.5rem) var(--gutter) 3.5rem;
+}
+
+/* 極淡的暖色暈染，避免整片死白 */
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 8%, rgba(163,139,111,.10), transparent 70%),
+    radial-gradient(50% 45% at 12% 92%, rgba(163,139,111,.07), transparent 70%);
+  pointer-events: none;
+}
+
+.cover__sheet {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  animation: fade-up 1.1s var(--ease) both;
+}
+
+/* 手機為預設：單欄直向堆疊，順序是 標題 → 照片 → 日期場地按鈕。
+   標題區刻意壓得很矮，讓全身照能落在第一個螢幕裡。               */
+.cover__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "head"
+    "photo"
+    "info";
+  gap: clamp(1rem, 2.8vw, 1.75rem);
+  padding: clamp(1.25rem, 3.5vw, 2.75rem);
+  text-align: center;
+}
+.cover__head  { grid-area: head; }
+.cover__photo { grid-area: photo; }
+.cover__info  { grid-area: info; }
+
+.cover__head,
+.cover__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+/* 封面 logo */
+.cover__logo {
+  width: clamp(52px, 8vw, 100px);
+  height: auto;
+  margin-bottom: clamp(.7rem, 2vw, 1.5rem);
+}
+
+/* 名字是 logo 底下的第一個元素，取消上方外距避免和 logo 的下外距疊加
+   （.cover__head 是 flex 容器，margin 不會自動 collapse）*/
+.cover .hero__names { margin-top: 0; }
+
+/* 標題、照片、資訊三塊之間的距離統一交給 grid gap 控制，
+   不然這裡的 margin-top 會和 gap 疊加，間距變成兩倍。
+   border-top 保留，當作照片與細節之間的分隔線。               */
+.cover .hero__meta { margin-top: 0; }
+
+/* =============================================================
+   照片 · 錯位雙框
+   max-height 搭配 width:auto，依原始比例完整顯示，不裁切。
+   手機給到 56svh，讓全身照成為第一眼的主角。
+
+   特效全部疊在外層，照片本身不動
+   （不裁切、不套濾鏡、不在圖面上壓任何東西）：
+     1. 整組照片連框一起淡入並輕微上移
+     2. 內框由左往右描出（貼著照片）
+     3. 外框由右往左描出，往左上錯開一段
+        —— 呼應 logo 裡兩個交疊方框的語言
+     4. 外框之後極慢地來回飄移，讓畫面有呼吸感
+
+   兩層框都畫在 padding 內側，不用負值 inset，
+   所以窄螢幕不會戳出容器產生橫向捲軸。
+     --mat   照片與內框之間的留白
+     --shift 兩層框錯開的距離（想更明顯就把這個值加大）
+   ============================================================= */
+.cover__photo {
+  --mat: clamp(8px, 2vw, 14px);
+  --shift: clamp(10px, 2.4vw, 18px);
+  margin: 0;
+  min-width: 0;
+  display: none;
+}
+.cover.has-photo .cover__photo {
+  display: block;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  justify-self: center;
+  padding: calc(var(--mat) + var(--shift));
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 1.4s var(--ease),
+    transform 1.4s var(--ease);
+}
+/* 選擇器要比 .cover.has-photo .cover__photo 更具體，
+   否則上面的 opacity:0 會蓋掉這裡，照片永遠不會出現 */
+.cover.has-photo .cover__photo.is-ready {
+  opacity: 1;
+  transform: none;
+}
+
+.cover__photo img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(56svh, 560px);
+  margin-inline: auto;
+}
+
+.cover__photo::before,
+.cover__photo::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--line);
+}
+
+/* 內框：貼著照片，由左往右描出 */
+.cover__photo::after {
+  inset: var(--shift);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.1s var(--ease) .5s;
+}
+.cover__photo.is-ready::after { clip-path: inset(0 0 0 0); }
+
+/* 外框：往左上錯開 --shift，古銅色淡一點，由右往左描出 */
+.cover__photo::before {
+  inset: 0 calc(var(--shift) * 2) calc(var(--shift) * 2) 0;
+  border-color: var(--accent);
+  opacity: .5;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 1.1s var(--ease) .8s;
+}
+.cover__photo.is-ready::before {
+  clip-path: inset(0 0 0 0);
+  animation: frame-drift 14s var(--ease) 2.2s infinite alternate;
+}
+
+/* 幅度刻意壓在 4px，慢到幾乎察覺不到，只留一點生氣 */
+@keyframes frame-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-4px, 4px); }
+}
+
+/* 桌機：左欄放標題與資訊，右欄整條放照片 */
+@media (min-width: 900px) {
+  .cover.has-photo .cover__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 36%);
+    grid-template-areas:
+      "head  photo"
+      "info  photo";
+    align-content: center;
+    gap: clamp(1.25rem, 3vw, 2rem) clamp(1.75rem, 4vw, 3.25rem);
+  }
+  .cover__photo { align-self: center; }
+  .cover__photo img { max-height: min(70svh, 760px); }
+  /* 照片比左欄高時會把兩列撐開。讓標題貼齊自己那列的下緣、
+     資訊貼齊自己那列的上緣，兩塊就會在中間會合，
+     視覺上等同於左欄整體垂直居中，不會被拉出一段空隙。      */
+  .cover__head { align-self: end; }
+  .cover__info { align-self: start; }
+}
+
+/* 手機把標題與資訊區的間距收緊，把高度留給照片 */
+@media (max-width: 899px) {
+  .cover { padding: calc(var(--nav-h) + .85rem) var(--gutter) 2.25rem; }
+  .cover .hero__names { font-size: clamp(1.75rem, 7.5vw, 2.6rem); }
+  .cover .hero__sub { margin-top: .5rem; font-size: .72rem; }
+  .cover .hero__meta { padding-top: 1rem; gap: .8rem 1.5rem; }
+  .cover .countdown { margin-top: .9rem; }
+  .cover .hero__actions { margin-top: 1rem; }
+  /* 按鈕並排，比上下堆疊省下約 60px 高度 */
+  .cover .hero__actions .btn {
+    width: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 1rem;
+    font-size: .68rem;
+    letter-spacing: .12em;
+  }
+}
+
+/* 矮螢幕（例如 iPhone SE）：標題再壓一級，照片仍維持主角地位 */
+@media (max-width: 899px) and (max-height: 740px) {
+  .cover__logo { width: clamp(40px, 10vw, 52px); margin-bottom: .5rem; }
+  .cover .hero__sub { display: none; }
+  .cover__photo img { max-height: 50svh; }
+  .cover .hero__meta-item .note { font-size: .68rem; }
+}
+
+/* 往下看的提示：放在流程內，不用絕對定位，避免壓到內容 */
+.cover__hint {
+  justify-self: center;
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  display: grid;
+  gap: .55rem;
+  justify-items: center;
+  font-size: .62rem;
+  letter-spacing: .26em;
+  color: var(--muted);
+  text-decoration: none;
+  text-align: center;
+}
+.cover__hint i {
+  width: 1px; height: 34px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.cover__hint i::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--accent);
+  animation: scroll-line 2.1s var(--ease) infinite;
+}
+
+.hero__names {
+  margin-top: 1.6rem;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 11vw, 5.6rem);
+  line-height: 1.1;
+  letter-spacing: .06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(.6rem, 2.5vw, 1.6rem);
+}
+.hero__amp {
+  font-style: italic;
+  font-size: .62em;
+  color: var(--accent);
+}
+
+.hero__sub {
+  margin-top: 1.1rem;
+  font-size: .8rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero__meta {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding-top: clamp(1.75rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  flex-wrap: wrap;
+}
+.hero__meta-item { display: grid; gap: .3rem; min-width: 92px; }
+.hero__meta-item .label {
+  font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+}
+.hero__meta-item .value {
+  font-family: var(--serif); font-size: clamp(1.05rem, 3vw, 1.4rem); letter-spacing: .05em;
+}
+.hero__meta-item .note { font-size: .74rem; color: var(--ink-soft); }
+.hero__divider { width: 1px; align-self: stretch; background: var(--line); }
+
+/* Countdown */
+.countdown {
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 2.75rem);
+}
+.countdown__unit { display: grid; gap: .25rem; min-width: 54px; }
+.countdown__unit b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.countdown__unit span {
+  font-size: .58rem; letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+}
+.countdown.is-done { font-family: var(--serif); font-size: 1.2rem; letter-spacing: .12em; }
+
+.hero__actions {
+  margin-top: clamp(2rem, 5vw, 2.75rem);
+  display: flex; justify-content: center; gap: .85rem; flex-wrap: wrap;
+}
+
+@keyframes scroll-line {
+  0%   { transform: translateY(-100%); }
+  60%  { transform: translateY(100%); }
+  100% { transform: translateY(100%); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* =============================================================
+   邀請信
+   ============================================================= */
+.letter {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.6rem;
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 2.4vw, 1.28rem);
+  line-height: 2.1;
+  color: var(--ink-soft);
+}
+.sign {
+  margin-top: 2.25rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  letter-spacing: .1em;
+  color: var(--ink);
+}
+.sign::before {
+  content: ''; display: block; width: 44px; height: 1px;
+  background: var(--accent); margin: 0 auto 1.5rem;
+}
+
+/* =============================================================
+   婚禮資訊 · 垂直時間軸
+   一條連續的細線由上往下貫穿，每個時間點一顆圓點。
+   線畫在 ol 的 ::before，起訖點各縮 .55em 讓線收在頭尾圓點之間，
+   不會多出一小截突出來。
+   ============================================================= */
+.vtimeline {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: left;
+}
+.vtimeline::before {
+  content: '';
+  position: absolute;
+  left: 4px;                /* 對齊圓點中心 */
+  top: .55em;
+  bottom: .55em;
+  width: 1px;
+  background: var(--line);
+}
+
+.vtimeline__row {
+  position: relative;
+  padding-left: 2rem;
+  padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
+  display: grid;
+  grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
+  gap: .2rem 1rem;
+  align-items: baseline;
+}
+.vtimeline__row:last-child { padding-bottom: 0; }
+
+.vtimeline__row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .45em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.vtimeline__time {
+  font-family: var(--serif);
+  font-size: clamp(1.02rem, 2.6vw, 1.2rem);
+  letter-spacing: .05em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.vtimeline__label {
+  font-size: .95rem;
+  letter-spacing: .06em;
+  color: var(--ink);
+}
+
+/* 窄螢幕改成上下堆疊，時間仍在上方 */
+@media (max-width: 460px) {
+  .vtimeline__row { grid-template-columns: 1fr; }
+}
+
+/* ---------- 場地 ---------- */
+.venue {
+  margin-top: clamp(2.25rem, 5vw, 3.25rem);
+  padding-top: clamp(1.75rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.venue__label {
+  font-size: .64rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .9rem;
+}
+.venue__name {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3.5vw, 1.65rem);
+  letter-spacing: .06em;
+}
+.venue__address { margin-top: .5rem; font-size: .92rem; color: var(--ink-soft); }
+
+.details__actions {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  display: flex; justify-content: center; gap: .85rem; flex-wrap: wrap;
+}
+
+/* =============================================================
+   RSVP / Google Form
+   ============================================================= */
+.rsvp { text-align: center; }
+.rsvp__note {
+  margin-top: 1.1rem;
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+/* 尚未設定表單網址時的提示卡 */
+.form-notice { padding: clamp(1.75rem, 5vw, 3rem); text-align: center; }
+.form-notice h3 {
+  font-family: var(--serif); font-size: 1.4rem; letter-spacing: .06em; margin-bottom: 1rem;
+}
+.form-notice ol {
+  margin: 1.25rem auto 0;
+  max-width: 46ch;
+  text-align: left;
+  display: grid;
+  gap: .75rem;
+  counter-reset: step;
+}
+.form-notice ol li {
+  counter-increment: step;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  padding-left: 2rem;
+  position: relative;
+}
+.form-notice ol li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: .35rem;
+  width: 20px; height: 20px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  font-size: .66rem; color: var(--accent);
+}
+.form-notice code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .82em;
+  background: var(--paper-alt);
+  padding: .15em .45em;
+  border: 1px solid var(--line);
+}
+
+/* =============================================================
+   FAQ
+   ============================================================= */
+.faq { border-top: 1px solid var(--line); }
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.35rem 2.5rem 1.35rem 0;
+  position: relative;
+  font-family: var(--serif);
+  font-size: clamp(1.02rem, 2.5vw, 1.15rem);
+  letter-spacing: .04em;
+  transition: color .3s var(--ease);
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary:hover { color: var(--accent); }
+.faq__item summary::after {
+  content: ''; position: absolute; right: .35rem; top: 50%;
+  width: 11px; height: 1px; background: var(--ink);
+}
+.faq__item summary::before {
+  content: ''; position: absolute; right: .35rem; top: 50%;
+  width: 11px; height: 1px; background: var(--ink);
+  transform: rotate(90deg);
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+}
+.faq__item[open] summary::before { transform: rotate(0deg); opacity: 0; }
+.faq__body { padding: 0 1rem 1.6rem 0; display: grid; gap: .8rem; }
+.faq__body p { font-size: .9rem; color: var(--ink-soft); }
+.faq__body b { font-weight: 500; color: var(--ink); letter-spacing: .04em; }
+/* 社群帳號清單 */
+.faq__tags {
+  display: grid;
+  gap: .35rem;
+  font-size: .9rem;
+  color: var(--ink-soft);
+}
+
+/* =============================================================
+   Closing + Footer
+   ============================================================= */
+.closing {
+  padding-block: clamp(5rem, 12vw, 9rem);
+  background: var(--ink);
+  color: var(--paper);
+}
+.closing .kicker { color: rgba(250, 248, 244, .55); }
+.closing__text {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  line-height: 1.8;
+  letter-spacing: .06em;
+}
+.closing__mark {
+  margin-top: 2.5rem;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  letter-spacing: .34em;
+  color: var(--accent);
+}
+.closing__logo {
+  width: clamp(74px, 12vw, 118px);
+  height: auto;
+  margin-inline: auto;
+  opacity: .9;
+}
+
+.footer {
+  padding-block: clamp(3rem, 7vw, 4.5rem) 2rem;
+  background: var(--paper-alt);
+  border-top: 1px solid var(--line);
+}
+.footer__inner {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  /* 兩欄等寬。minmax(0,1fr) 而非 1fr，長字串才不會把欄位撐開 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 560px) {
+  .footer__inner { grid-template-columns: 1fr; }
+}
+/* 兩欄各自置中。letter-spacing 會在字尾多出一格空隙，
+   純靠 text-align 會看起來偏左一點，用 padding-left 補回來。   */
+.footer__col { text-align: center; }
+.footer__label {
+  font-size: .64rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .9rem;
+  padding-left: .28em;
+}
+.footer__col p { font-size: .88rem; color: var(--ink-soft); }
+.footer__col a { text-decoration: none; border-bottom: 1px solid var(--line); }
+.footer__col a:hover { border-bottom-color: var(--accent); }
+/* 原本是給英文標語用的（小字、大字距、全大寫）。
+   現在放的是中文句子，字級調大、字距收窄，並取消 uppercase
+   ——不然句中的 shot 會被強制變成 SHOT。                        */
+.footer__bottom {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: .84rem;
+  letter-spacing: .08em;
+  color: var(--ink-soft);
+}
+.footer__bottom b {
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: .1em;
+}
+
+/* =============================================================
+   捲動進場動畫
+   ============================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* =============================================================
+   RWD
+   ============================================================= */
+@media (max-width: 860px) {
+  .nav__toggle { display: flex; }
+
+  .nav__links {
+    position: fixed;
+    inset: var(--nav-h) 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: .5rem var(--gutter) 1.5rem;
+    background: rgba(250, 248, 244, .98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity .3s var(--ease), transform .3s var(--ease), visibility .3s;
+  }
+  .nav__links.is-open { opacity: 1; visibility: visible; transform: none; }
+  .nav__links a {
+    padding: 1rem 0;
+    font-size: .82rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__links a:hover { border-bottom-color: var(--line); }
+  .nav__cta {
+    margin-top: 1.1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--ink) !important;
+  }
+
+  .hero__divider { display: none; }
+  .hero__meta { gap: 1.5rem 2.5rem; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .countdown { gap: .85rem; }
+  .countdown__unit { min-width: 46px; }
+  .btn { width: 100%; }
+  .hero__actions .btn { width: 100%; }
+}
+
+/* 尊重使用者的減少動態設定：關掉翻頁，退成一般靜態封面 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+
+  /* 照片直接呈現最終狀態。opacity、transform、clip-path 都要顯式
+     還原，否則照片會卡在淡出狀態、框線會卡在收起狀態。          */
+  .cover.has-photo .cover__photo { opacity: 1; transform: none; }
+  .cover__photo::before,
+  .cover__photo::after { clip-path: none; animation: none; }
+}
+
+/* 列印：讓喜帖也能直接印出來（封面照片保留）*/
+@media print {
+  .nav, .cover__hint, .countdown, .hero__actions,
+  .details__actions, .rsvp { display: none !important; }
+  body { background: #fff; }
+
+  .cover {
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+  .cover__sheet {
+    border: 0;
+    animation: none !important;
+    break-inside: avoid;
+  }
+  .cover.has-photo .cover__photo {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .cover__photo img { max-height: 55vh !important; }
+  .cover__photo::before,
+  .cover__photo::after { clip-path: none !important; animation: none !important; }
+
+  .section, .closing { padding-block: 1.5rem; break-inside: avoid; }
+  .closing { background: #fff; color: #000; }
+  .reveal { opacity: 1; transform: none; }
+}
