@@ -225,7 +225,12 @@
       <div class="details__actions reveal">
         <a class="btn btn--solid" id="mapBtn" href="#" target="_blank" rel="noopener">開啟地圖導航</a>
         <a class="btn btn--ghost" id="transitBtn" href="#" target="_blank" rel="noopener">飯店交通資訊</a>
-        <button class="btn btn--ghost" id="calendarBtn" type="button">加入行事曆</button>
+        <!-- 開新視窗到 Google 行事曆的建立活動頁，欄位已預先填好。
+             href 這串是 JS 沒跑起來時的備援，內容由 main.js 依
+             config.js 的日期與場地重新產生一次（會多帶完整地址）。
+             活動標題裡的「&」必須寫成 %26，否則會被當成參數分隔符。 -->
+        <a class="btn btn--ghost" id="calendarBtn" target="_blank" rel="noopener"
+           href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=林顏琛%20%26%20嚴思函%20婚宴&amp;dates=20261108T040000Z/20261108T063000Z&amp;location=台北萬豪酒店%20宜華廳%205F&amp;details=期待與你見面。">加入 Google 行事曆</a>
       </div>
     </div>
   </section>

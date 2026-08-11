@@ -358,44 +358,32 @@
       else a.removeAttribute('href');
     });
 
+    /* 加入 Google 行事曆
+       開新視窗到 Google 的「建立活動」頁面，欄位預先填好，
+       賓客只要按儲存就完成，不必下載檔案再手動匯入。
+       時間用 UTC 的 Z 格式（20261108T040000Z），時區已經內含在裡面，
+       所以不需要再加 ctz 參數——兩個一起給反而可能互相衝突。      */
     var calBtn = $('#calendarBtn');
-    if (!calBtn || !start) return;
+    if (!calBtn) return;
 
-    calBtn.addEventListener('click', function () {
-      var stamp = function (d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
-      var g = get('couple.groom.name') || '';
-      var b = get('couple.bride.name') || '';
-      var title = g + ' & ' + b + ' 婚宴';
-      var place = [get('venue.name'), get('venue.hall'), get('venue.address')].filter(Boolean).join(' ');
-      var finish = end || new Date(start.getTime() + 3 * 36e5);
+    if (!start) { calBtn.hidden = true; return; }
 
-      var ics = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Wedding Invitation//ZH-TW//EN',
-        'CALSCALE:GREGORIAN',
-        'BEGIN:VEVENT',
-        'UID:' + stamp(start) + '-wedding@invitation',
-        'DTSTAMP:' + stamp(new Date()),
-        'DTSTART:' + stamp(start),
-        'DTEND:' + stamp(finish),
-        'SUMMARY:' + title,
-        'LOCATION:' + place.replace(/,/g, '\\,'),
-        'DESCRIPTION:期待與你見面。' + (location.href.split('#')[0]),
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
+    var utc = function (d) {
+      return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    };
+    var g = get('couple.groom.name') || '';
+    var b = get('couple.bride.name') || '';
+    var title = (g && b) ? (g + ' & ' + b + ' 婚宴') : '婚宴';
+    var place = [get('venue.name'), get('venue.hall'), get('venue.address')]
+                  .filter(Boolean).join(' ');
+    var finish = end || new Date(start.getTime() + 3 * 36e5);
+    var details = '期待與你見面。\n' + location.href.split('#')[0];
 
-      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'wedding-invitation.ics';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    });
+    calBtn.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=' + encodeURIComponent(title) +
+      '&dates=' + utc(start) + '/' + utc(finish) +
+      '&location=' + encodeURIComponent(place) +
+      '&details=' + encodeURIComponent(details);
   }
 
   /* ---------- 啟動 ---------- */
