@@ -40,7 +40,7 @@ window.WEDDING_CONFIG = {
   /* ---------- 場地 ---------- */
   venue: {
     name: '台北萬豪酒店',
-    hall: '宜華廳 36F',
+    hall: '寰宇廳 36F',
     address: '台北市中山區樂群二路 199 號',
     // Google 地圖連結：到地圖上按「分享」複製網址貼進來
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=台北萬豪酒店+台北市中山區樂群二路199號',
