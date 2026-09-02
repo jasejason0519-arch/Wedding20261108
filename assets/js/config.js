@@ -62,5 +62,5 @@ window.WEDDING_CONFIG = {
   /* ---------- 出席回覆截止日 ----------
      必須和 Google 表單裡寫的日期一致，不然賓客會看到兩個不同的期限。
      格式 YYYY-MM-DD。留空的話會自動用「婚期前 30 天」。          */
-  rsvpDeadline: '2026-08-28'
+  rsvpDeadline: '2026-09-18'
 };
